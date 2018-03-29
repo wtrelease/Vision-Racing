@@ -1,3 +1,4 @@
+# Vision Racing Project Proposal
 ### Big Idea
 Design a racing game that uses OpenCV for control inout. We want the movement of a player’s body to drive the car in the game. We will explore: Image processing, AI and Algorithm, and Machine Learning. For this project, we want the minimum viable product to be a game in which you can control your player via the computers webcam. A stretch goal is to have an AI that is your opponent that you race against and gets smarter as you play against it. Additional stretch goals include multiplayer race mode, and adding complexity to the game such as items you collect or throw at one another.
 
