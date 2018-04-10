@@ -53,6 +53,9 @@ class Map(object):
                     if im_bw.getpixel((x,y)) == 0:
                         self.road[x,y] = 1
 
+        #plt.imshow(self.road, interpolation='nearest')
+        #plt.show()
+
 
 class Car(pygame.sprite.Sprite):
     """Class representing a car"""
