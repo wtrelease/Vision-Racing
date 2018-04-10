@@ -5,8 +5,6 @@ import cv2.aruco as aruco
 
 cap = cv2.VideoCapture(0)
 
-
-
 while True:
     # Capture frame by frame
     ret, frame = cap.read()
