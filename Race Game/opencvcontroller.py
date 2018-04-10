@@ -2,6 +2,8 @@ import numpy as np
 from collections import deque
 import cv2
 import cv2.aruco as aruco
+import os
+
 
 cap = cv2.VideoCapture(0)
 
