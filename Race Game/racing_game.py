@@ -54,6 +54,9 @@ class Map(object):
                     if im_bw.getpixel((x,y)) == 0:
                         self.road[x,y] = 1
 
+        #plt.imshow(self.road, interpolation='nearest')
+        #plt.show()
+
 
 class Car(pygame.sprite.Sprite):
     """Class representing a car"""
@@ -106,8 +109,8 @@ class Car(pygame.sprite.Sprite):
             self.rect.y -= dy
             self.speed -= self.acceleration * 5 * t
             self.direction += self.bounce_speed * t
-        if self.speed < 0: #prevent speed from going negative
-            self.speed = 0
+        if self.speed < -self.speed_max/3: #prevent speed from going negative
+            self.speed = -self.speed_max/3
         self.rotate(self.direction) #call method to rotate the cars image
 
     """Rotate a cars image"""
@@ -191,11 +194,13 @@ def race(SCREEN_WIDTH, SCREEN_HEIGHT):
                 if event.key == pygame.K_q:
                     sys.exit()
                 if event.key == pygame.K_LEFT:
-                    racer.steer(1)
+                    racerTurn = 1
                 elif event.key == pygame.K_RIGHT:
-                    racer.steer(-1)
+                    racerTurn = -1
             else:
-                racer.steer(0)
+                racerTurn = 0
+
+        racer.steer(racerTurn)
 
         """Get player control input"""
 
