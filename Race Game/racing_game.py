@@ -6,6 +6,7 @@ import cv2
 from matplotlib import pyplot as plt
 from PIL import Image
 from convert import convert_to_bw
+from opencvcontroller import controller
 
 class Window(object):
     """A view of the Game window"""
