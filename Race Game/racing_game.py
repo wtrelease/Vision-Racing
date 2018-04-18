@@ -3,6 +3,7 @@ import pygame
 from pygame.locals import *
 import random, math, numpy
 import cv2
+import numpy as np
 from matplotlib import pyplot as plt
 from PIL import Image
 from convert import convert_to_bw
@@ -179,6 +180,10 @@ def race(SCREEN_WIDTH, SCREEN_HEIGHT):
     racer = Racer('B', 100, 100)
     car_list.add(racer)
 
+    """Initialize the webcam"""
+    cap = cv2.VideoCapture(0)
+    turn = 0
+
     """Main Loop of the Game"""
     Running = True
     while Running:
@@ -193,18 +198,19 @@ def race(SCREEN_WIDTH, SCREEN_HEIGHT):
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_q:
                     sys.exit()
-                if event.key == pygame.K_LEFT:
-                    racerTurn = 1
-                elif event.key == pygame.K_RIGHT:
-                    racerTurn = -1
-            else:
-                racerTurn = 0
+            #     if event.key == pygame.K_LEFT:
+            #         racerTurn = 1
+            #     elif event.key == pygame.K_RIGHT:
+            #         racerTurn = -1
+            # else:
+            #     racerTurn = 0
 
-        racer.steer(racerTurn)
+        #racer.steer(racerTurn)
 
         """Get player control input"""
-
-
+        turn = controller(cap, turn)
+        racer.steer(-turn)
+        
         """Get CPU control input"""
 
 
