@@ -7,7 +7,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 from PIL import Image
 from convert import convert_to_bw
-from opencvcontroller import controller
+from opencvcontroller import controller and face_controller
 
 class Window(object):
     """A view of the Game window"""
@@ -210,7 +210,7 @@ def race(SCREEN_WIDTH, SCREEN_HEIGHT):
         """Get player control input"""
         turn = controller(cap, turn)
         racer.steer(-turn)
-        
+
         """Get CPU control input"""
 
 
