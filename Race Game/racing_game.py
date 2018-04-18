@@ -7,7 +7,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 from PIL import Image
 from convert import convert_to_bw
-from opencvcontroller import controller and face_controller
+from opencvcontroller import controller, face_controller
 
 class Window(object):
     """A view of the Game window"""
