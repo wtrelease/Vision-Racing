@@ -36,3 +36,19 @@ def controller(cap,old_turn):
     #     cv2.destroyAllWindows
     #     break
     return old_turn
+
+def face_controller(cap, old_turn):
+    face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_alt.xml')
+    kernel = np.ones((21, 21), 'uint8')
+    ret, frame = cap.read()
+
+    faces = face_cascade.detectMultiScale(frame, scaleFactor=1.2, minSize=(20,20))
+    for (x, y, w, h) in faces:
+        frame[y:y+h, x:x+w, :] = cv2.dilate(frame[y:y+h, x:x+w, :], kernel)
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+
+        cv2.imshow('frame', gray)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            cap.release()
+            cv2.destroyAllWindows
+            break
