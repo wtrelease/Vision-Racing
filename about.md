@@ -1,3 +1,7 @@
+---
+title: About
+---
+
 # Vision Racing
 
 ### Description
