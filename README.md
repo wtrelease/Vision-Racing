@@ -23,8 +23,12 @@ Install openCV computer vision library
 pip install opencv-python
 ```
 Install requirements for this project
- ```
+```
 pip install -r requirements.txt
+```
+Install dlib package
+```
+How to Instructions: https://www.pyimagesearch.com/2017/03/27/how-to-install-dlib/
 ```
 
 ### Usage
