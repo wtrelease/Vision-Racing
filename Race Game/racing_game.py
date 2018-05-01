@@ -99,7 +99,7 @@ class Car(pygame.sprite.Sprite):
         left_corner = (self.rect.center[0]+f_x-s_x, self.rect.center[1]+f_y-s_y) #find coordinates of front left corner
         right_corner = (self.rect.center[0]+f_x+s_x, self.rect.center[1]+f_y+s_y) #find coordinates of front right corner
         left = (int(left_corner[0]),int(left_corner[1])) #covert left corner to int
-        right = (int(right_corner[0]),int(right_corner[1])) #conver right corner to int
+        right = (int(right_corner[0]),int(right_corner[1])) #convert right corner to int
         if course.road[left] == 0 and course.road[self.rect.center] == 1: #check for left side collision
             self.rect.x -= dx #back up in x
             self.rect.y -= dy #back up in y
