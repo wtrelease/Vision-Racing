@@ -4,17 +4,15 @@ layout: template
 filename: index
 --- 
 
-### Welcome to GitHub Pages.
-This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here [using GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/), select a template crafted by a designer, and publish. After your page is generated, you can check out the new `gh-pages` branch locally. If you’re using GitHub Desktop, simply sync your repository and you’ll see the new branch.
+### Overview.
+Vision Racing is a game that depends solely on one's computer camera and their ability to use the position of their head to steer. The game follows the placement of a person's head and based of their x-position, will direct the car which direction to go.
 
-### Designer Templates
-We’ve crafted some handsome templates for you to use. Go ahead and click 'Continue to layouts' to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved.
+### Game Design
+This game utilizes Open Computer Vision, OpenCV, which is a Python library that uses the camera to capture in real time what the camera sees in order to be used in different methods. In this game, OpenCV is used as the controller of the racers using facial recognition. We use OpenCV to track the x coordinates of one's face within te camera frame which is then used to steer the car.
 
-### Creating pages manually
-If you prefer to not use the automatic generator, push a branch named `gh-pages` to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.
+### Maps and Racing
+When the game code is ran, one can choose to create their own map or use one already uploaded. If one chooses to upload a map, the game will automatically start up the camera in order to take a picture of the drawn/created map and convert it to black and white. From there the map will be a part of the game and allow you to use the new map at any time. This allows the game to continuously grow and gives the user the ability to create their own experience and difficult map if they choose.
 
 ### Authors and Contributors
-You can @mention a GitHub username to generate a link to their profile. The resulting `<a>` element will link to the contributor’s GitHub Profile. For example: In 2007, Chris Wanstrath (@defunkt), PJ Hyett (@pjhyett), and Tom Preston-Werner (@mojombo) founded GitHub.
-
-### Support or Contact
-Having trouble with Pages? Check out our [documentation](https://help.github.com/pages) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+This game was developed by Jamie  O'Brien( @jamieaobrien), Walker Trelease (@wtrelease), and Shyheim Russell (@shyheim3323) in the Spring of 2018. 
+Developed for Software Design, Spring of 2018.
