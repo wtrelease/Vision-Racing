@@ -208,8 +208,12 @@ def race(SCREEN_WIDTH, SCREEN_HEIGHT):
         #racer.steer(racerTurn)
 
         """Get player control input"""
-        turn = controller(cap, turn)
-        racer.steer(-turn)
+        # turn = controller(cap, turn)
+        # racer.steer(-turn)
+
+        """Get plater control input through face recognition"""
+        turn = face_controller(cap, turn)
+        racer.steer(turn)
 
         """Get CPU control input"""
 
