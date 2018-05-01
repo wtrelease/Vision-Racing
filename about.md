@@ -1,6 +1,8 @@
 ---
 title: About
----
+layout: template
+filename: about
+--- 
 
 # Vision Racing
 
