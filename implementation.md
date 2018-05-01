@@ -1,7 +1,7 @@
 ---
 title: Implementation
 layout: template
-filename: implementation.md
+filename: implementation
 --- 
 
 # Implementation
