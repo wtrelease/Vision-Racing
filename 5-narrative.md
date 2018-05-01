@@ -1,7 +1,7 @@
 ---
 title: Story
 layout: template
-filename: 5-narrative.md
+filename: 5-narrative
 --- 
 
 # Story
