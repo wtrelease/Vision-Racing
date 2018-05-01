@@ -5,6 +5,7 @@ import cv2.aruco as aruco
 import os
 import glob
 import math
+import sys
 
 def controller(cap,old_turn):
 
@@ -37,18 +38,34 @@ def controller(cap,old_turn):
     #     break
     return old_turn
 
-def face_controller(cap, old_turn):
+def face_controller(cap,steer):
     face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_alt.xml')
-    kernel = np.ones((21, 21), 'uint8')
     ret, frame = cap.read()
 
-    faces = face_cascade.detectMultiScale(frame, scaleFactor=1.2, minSize=(20,20))
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    # frame_width = cap.get(cv2.cv.CV_CAP_PROP_FRAME_WIDTH)
+    frame_width = cap.get(3)
+    faces = face_cascade.detectMultiScale(gray,
+                                        scaleFactor=1.1,
+                                        minNeighbors=5,
+                                        minSize=(30, 30))
     for (x, y, w, h) in faces:
-        frame[y:y+h, x:x+w, :] = cv2.dilate(frame[y:y+h, x:x+w, :], kernel)
-        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-
-        cv2.imshow('frame', gray)
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            cap.release()
-            cv2.destroyAllWindows
-            break
+        cv2.rectangle(frame, (x,y), (x+w, y+h), (0, 255, 0), 2)
+        face_center = x + w/2
+        frame_center = frame_width/2
+        bounds = .25
+        upper_bound = frame_width*(1-bounds)
+        lower_bound = frame_width*bounds
+        if face_center < lower_bound:
+            face_center = lower_bound
+        if face_center > upper_bound:
+            face_center = upper_bound
+        # x_min = ((frame_width * lower_bound)-320)/160
+        # x_max = ((frame_width * upper_bound)-320)/160
+        # # steer = [x_min, x_max]
+        # if face_center < frame_center:
+        #     steer = x_min
+        # elif face_center > frame_center:
+        #     steer = x_max
+        steer = (face_center - frame_center)/frame_center*2
+    return steer
