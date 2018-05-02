@@ -41,7 +41,7 @@ def controller(cap,old_turn):
 def face_controller(cap,steer):
     face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_alt.xml')
     ret, frame = cap.read()
-
+    kernel = np.ones((21, 21), 'uint8')
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     # frame_width = cap.get(cv2.cv.CV_CAP_PROP_FRAME_WIDTH)
     frame_width = cap.get(3)
@@ -53,9 +53,10 @@ def face_controller(cap,steer):
         cv2.rectangle(frame, (x,y), (x+w, y+h), (0, 255, 0), 2)
         face_center = x + w/2
         frame_center = frame_width/2
-        bounds = .25
+        bounds = .33
         upper_bound = frame_width*(1-bounds)
         lower_bound = frame_width*bounds
+        view_range = upper_bound - lower_bound
         if face_center < lower_bound:
             face_center = lower_bound
         if face_center > upper_bound:
@@ -67,5 +68,21 @@ def face_controller(cap,steer):
         #     steer = x_min
         # elif face_center > frame_center:
         #     steer = x_max
-        steer = (face_center - frame_center)/frame_center*2
-    return steer
+        steer = (face_center - frame_center)/view_range*2
+        print(steer)
+
+        cv2.rectangle(gray, (x, y), (x+w, y+h), (0, 0, 255))
+        cv2.imshow('frame', gray)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            cv2.destroyAllWindows
+            break
+    return steer/5
+# if __name__ == "__main__":
+#     # MainWindow = RunRunMain()
+#     # MainWindow.MainLoop()
+#     while (True):
+#         frame = cap.read()
+#         steer = opencvcontroller(cap, steer)
+#         if cv2.waitKey(1) & 0xFF == ord('q'):
+#             cv2.destroyAllWindows
+#             break
