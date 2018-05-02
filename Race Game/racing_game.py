@@ -177,7 +177,7 @@ def race(SCREEN_WIDTH, SCREEN_HEIGHT):
 
     """Intitialize the cars"""
     car_list = pygame.sprite.Group()
-    racer = Racer('B', 100, 100)
+    racer = Racer('B', 300, 300)
     car_list.add(racer)
 
     """Initialize the webcam"""
