@@ -8,8 +8,12 @@ from matplotlib import pyplot as plt
 from PIL import Image
 from convert import convert_to_bw
 from opencvcontroller import controller, face_controller
+<<<<<<< HEAD
 from AI import AI_name
 from ai_line import AI_line
+=======
+from COM_AI import COM
+>>>>>>> 9d4fe81dfd979f57e4191e95583fda892a344f43
 
 class Window(object):
     """A view of the Game window"""
@@ -180,8 +184,13 @@ def race(SCREEN_WIDTH, SCREEN_HEIGHT):
     """Intitialize the cars"""
     car_list = pygame.sprite.Group()
     CPU_list = pygame.sprite.Group()
+<<<<<<< HEAD
     racer = Racer('B', 100, 100)
     CPU1 = CPU('R', 300, 300)
+=======
+    racer = Racer('B', 300, 300)
+    CPU1 = CPU('G', 250, 350)
+>>>>>>> 9d4fe81dfd979f57e4191e95583fda892a344f43
     car_list.add(racer)
     car_list.add(CPU1)
     CPU_list.add(CPU1)
@@ -194,7 +203,7 @@ def race(SCREEN_WIDTH, SCREEN_HEIGHT):
     Running = True
     while Running:
         """Keep track of time"""
-        time.tick(80)
+        time.tick(40)
         frame_time = time.get_time() / 1000 #find frame time in seconds
 
         """Check for key inputs inputs"""
@@ -204,22 +213,30 @@ def race(SCREEN_WIDTH, SCREEN_HEIGHT):
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_q:
                     sys.exit()
-            #     if event.key == pygame.K_LEFT:
-            #         racerTurn = 1
-            #     elif event.key == pygame.K_RIGHT:
-            #         racerTurn = -1
-            # else:
-            #     racerTurn = 0
+                if event.key == pygame.K_LEFT:
+                    racerTurn = 1
+                elif event.key == pygame.K_RIGHT:
+                    racerTurn = -1
+            else:
+                racerTurn = 0
 
-        #racer.steer(racerTurn)
+        racer.steer(racerTurn)
 
         """Get player control input"""
-        turn = controller(cap, turn)
-        racer.steer(-turn)
+        # turn = controller(cap, turn)
+        # racer.steer(-turn)
+
+        """Get plater control input through face recognition"""
+        # turn = face_controller(cap, turn)
+        # racer.steer(turn)
 
         """Get CPU control input"""
         screen.blit(background, (0, 0))
+<<<<<<< HEAD
         [car.steer(AI_line(car, course.road, screen)) for car in CPU_list]
+=======
+        [car.steer(COM(car, course.road, screen, font)) for car in CPU_list]
+>>>>>>> 9d4fe81dfd979f57e4191e95583fda892a344f43
 
         """Update the cars"""
         [car.update(frame_time, course) for car in car_list] #update all the cars positins
