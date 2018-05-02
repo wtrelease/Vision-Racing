@@ -8,6 +8,7 @@ from matplotlib import pyplot as plt
 from PIL import Image
 from convert import convert_to_bw
 from opencvcontroller import controller, face_controller
+from AI import AI_name
 
 class Window(object):
     """A view of the Game window"""
@@ -177,8 +178,12 @@ def race(SCREEN_WIDTH, SCREEN_HEIGHT):
 
     """Intitialize the cars"""
     car_list = pygame.sprite.Group()
-    racer = Racer('B', 300, 300)
+    CPU_list = pygame.sprite.Group()
+    racer = Racer('B', 100, 100)
+    CPU1 = CPU('G', 100, 100)
     car_list.add(racer)
+    car_list.add(CPU1)
+    CPU_list.add(CPU1)
 
     """Initialize the webcam"""
     cap = cv2.VideoCapture(0)
@@ -216,7 +221,7 @@ def race(SCREEN_WIDTH, SCREEN_HEIGHT):
         racer.steer(turn)
 
         """Get CPU control input"""
-
+        [car.steer(AI_name(car, course.road)) for car in CPU_list]
 
         """Update the cars"""
         [car.update(frame_time, course) for car in car_list] #update all the cars positins
