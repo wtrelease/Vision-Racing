@@ -1,0 +1,39 @@
+from racing_game import Map
+from racing_game import Car
+#from racing_game import racer
+#from racing_game import course
+
+
+
+
+
+thetas = [self.direction self.direction+30 self.direction-30]
+
+
+xi = self.rect.x
+yi = self.rect.y
+step = 1
+x_step = cos(theta)*step
+y_step = sin(theta)*step
+
+on_road = True
+distance = 0
+distances = []
+for theta in thetas:
+    while on_road:
+        distance += step
+        x += x_step
+        y += y_step
+    distances.append(distance)
+return distances
+
+m = 0
+c = 0
+for dist in distances:
+    if dist > m:
+        n = dist
+        th = thetas(c)
+        c += 1
+return th
+
+self.direction += th

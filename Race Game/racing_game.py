@@ -9,6 +9,7 @@ from PIL import Image
 from convert import convert_to_bw
 from opencvcontroller import controller, face_controller
 from AI import AI_name
+from ai_line import AI_line
 
 class Window(object):
     """A view of the Game window"""
@@ -180,7 +181,7 @@ def race(SCREEN_WIDTH, SCREEN_HEIGHT):
     car_list = pygame.sprite.Group()
     CPU_list = pygame.sprite.Group()
     racer = Racer('B', 100, 100)
-    CPU1 = CPU('G', 100, 100)
+    CPU1 = CPU('R', 300, 300)
     car_list.add(racer)
     car_list.add(CPU1)
     CPU_list.add(CPU1)
@@ -217,7 +218,8 @@ def race(SCREEN_WIDTH, SCREEN_HEIGHT):
         racer.steer(-turn)
 
         """Get CPU control input"""
-        [car.steer(AI_name(car, course.road)) for car in CPU_list]
+        screen.blit(background, (0, 0))
+        [car.steer(AI_line(car, course.road, screen)) for car in CPU_list]
 
         """Update the cars"""
         [car.update(frame_time, course) for car in car_list] #update all the cars positins
@@ -227,7 +229,7 @@ def race(SCREEN_WIDTH, SCREEN_HEIGHT):
 
 
         """Draw the game"""
-        screen.blit(background, (0, 0))
+
         car_list.draw(screen)
         fps = font.render("FPS: %.2f" % time.get_fps(), 1, (255, 0, 0))
         fpspos = fps.get_rect(centerx= 80, centery = 50)
