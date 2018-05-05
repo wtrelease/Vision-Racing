@@ -26,10 +26,6 @@ Install requirements for this project
 ```
 pip install -r requirements.txt
 ```
-Install dlib package
-```
-How to Instructions: https://www.pyimagesearch.com/2017/03/27/how-to-install-dlib/
-```
 
 ### Usage
 To run the game, run the file racing_game.py, and answer the question, “Would you like to capture a new map?” Responding no to this question will result in a selection of pre-existing maps to choose from. Responding yes to this question will activate your webcam, expecting to see a drawing of a map that it will convert into a virtual map to race on. It will then list available maps and you can choose one by typing the name without a file extension at which point the game will begin, and the cars can be controlled via arrow keys.
