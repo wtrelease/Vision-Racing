@@ -53,7 +53,7 @@ def face_controller(cap,steer):
         cv2.rectangle(frame, (x,y), (x+w, y+h), (0, 255, 0), 2)
         face_center = x + w/2
         frame_center = frame_width/2
-        bounds = .33
+        bounds = .3
         upper_bound = frame_width*(1-bounds)
         lower_bound = frame_width*bounds
         view_range = upper_bound - lower_bound
@@ -62,11 +62,10 @@ def face_controller(cap,steer):
         if face_center > upper_bound:
             face_center = upper_bound
         steer = (face_center - frame_center)/view_range*2
-        print(steer)
-
         # cv2.rectangle(gray, (x, y), (x+w, y+h), (0, 0, 255))
         # cv2.imshow('frame', gray)
         # if cv2.waitKey(1) & 0xFF == ord('q'):
         #     cv2.destroyAllWindows
         #     break
-    return math.tan(steer/3)
+    power = 2.2
+    return abs(steer)**(power-1)*steer
