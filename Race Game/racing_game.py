@@ -166,12 +166,15 @@ class Racer(Car):
     def __init__(self, name, color = 'R', X=300, Y=300):
         self.color = color
         super().__init__(name, X, Y)
+        self.rotate_speed_max = self.speed * .3
 
 class CPU(Car):
     """Class representing a computer controlled car"""
-    def __init__(self, name, color = 'B', X=300, Y=300):
+    def __init__(self, name, speed = 150, color = 'B', X=300, Y=300):
         self.color = color
         super().__init__(name, X, Y)
+        self.acceleration = 35
+        self.speed_max = 150
 
 
 
@@ -217,8 +220,8 @@ def race():
     COM_AI_list = pygame.sprite.Group()
     LINE_AI_list = pygame.sprite.Group()
     racer = Racer('Player', 'B', course.start_X, course.start_Y)
-    CPU1 = CPU('COM AI', 'R', course.start_X, course.start_Y)
-    CPU2 = CPU('Line AI', 'G', course.start_X, course.start_Y)
+    CPU1 = CPU('COM AI', 170, 'R', course.start_X, course.start_Y)
+    CPU2 = CPU('Line AI', 150, 'G', course.start_X, course.start_Y)
     car_list.add(racer)
     car_list.add(CPU1)
     car_list.add(CPU2)
