@@ -71,12 +71,12 @@ def face_controller(cap,steer):
         steer = (face_center - frame_center)/view_range*2
         print(steer)
 
-        cv2.rectangle(gray, (x, y), (x+w, y+h), (0, 0, 255))
-        cv2.imshow('frame', gray)
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            cv2.destroyAllWindows
-            break
-    return steer/2.5
+        # cv2.rectangle(gray, (x, y), (x+w, y+h), (0, 0, 255))
+        # cv2.imshow('frame', gray)
+        # if cv2.waitKey(1) & 0xFF == ord('q'):
+        #     cv2.destroyAllWindows
+        #     break
+    return math.tan(steer/3)
 # if __name__ == "__main__":
 #     # MainWindow = RunRunMain()
 #     # MainWindow.MainLoop()
