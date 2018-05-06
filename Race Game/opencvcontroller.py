@@ -76,7 +76,7 @@ def face_controller(cap,steer):
         if cv2.waitKey(1) & 0xFF == ord('q'):
             cv2.destroyAllWindows
             break
-    return steer/5
+    return steer/2.5
 # if __name__ == "__main__":
 #     # MainWindow = RunRunMain()
 #     # MainWindow.MainLoop()
