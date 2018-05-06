@@ -38,12 +38,12 @@ def controller(cap,old_turn):
     #     break
     return old_turn
 
+
+face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_alt.xml')
+
 def face_controller(cap,steer):
-    face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_alt.xml')
     ret, frame = cap.read()
-    kernel = np.ones((21, 21), 'uint8')
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    # frame_width = cap.get(cv2.cv.CV_CAP_PROP_FRAME_WIDTH)
     frame_width = cap.get(3)
     faces = face_cascade.detectMultiScale(gray,
                                         scaleFactor=1.1,
@@ -61,13 +61,6 @@ def face_controller(cap,steer):
             face_center = lower_bound
         if face_center > upper_bound:
             face_center = upper_bound
-        # x_min = ((frame_width * lower_bound)-320)/160
-        # x_max = ((frame_width * upper_bound)-320)/160
-        # # steer = [x_min, x_max]
-        # if face_center < frame_center:
-        #     steer = x_min
-        # elif face_center > frame_center:
-        #     steer = x_max
         steer = (face_center - frame_center)/view_range*2
         print(steer)
 
@@ -77,12 +70,3 @@ def face_controller(cap,steer):
         #     cv2.destroyAllWindows
         #     break
     return math.tan(steer/3)
-# if __name__ == "__main__":
-#     # MainWindow = RunRunMain()
-#     # MainWindow.MainLoop()
-#     while (True):
-#         frame = cap.read()
-#         steer = opencvcontroller(cap, steer)
-#         if cv2.waitKey(1) & 0xFF == ord('q'):
-#             cv2.destroyAllWindows
-#             break
