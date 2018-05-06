@@ -244,22 +244,22 @@ def race():
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_q:
                     sys.exit()
-                if event.key == pygame.K_LEFT:
-                    racerTurn = 1
-                elif event.key == pygame.K_RIGHT:
-                    racerTurn = -1
-            else:
-                racerTurn = 0
+            #     if event.key == pygame.K_LEFT:
+            #         racerTurn = 1
+            #     elif event.key == pygame.K_RIGHT:
+            #         racerTurn = -1
+            # else:
+            #     racerTurn = 0
 
-        racer.steer(racerTurn, frame_time)
+        # racer.steer(racerTurn, frame_time)
 
         """Get player control input"""
         # turn = controller(cap, turn)
         # racer.steer(-turn)
 
         """Get plater control input through face recognition"""
-        # turn = face_controller(cap, turn)
-        # racer.steer(turn)
+        turn = face_controller(cap, turn)
+        racer.steer(turn, frame_time)
 
         """Draw Game Map"""
         screen.blit(background, (0, 0))
