@@ -7,4 +7,4 @@ filename: 4-results
 # Results
 
 
-![Architecture Diagram:](https://raw.githubusercontent.com/wtrelease/Vision-Racing/gh-pages/Presentation%20Links/softdesArchitecture.png “Architecture Diagram“)
+![Architecture Diagram:](http://www.catster.com/wp-content/uploads/2017/08/A-fluffy-cat-looking-funny-surprised-or-concerned.jpg “Architecture Diagram“)
