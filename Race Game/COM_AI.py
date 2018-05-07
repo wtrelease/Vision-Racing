@@ -4,7 +4,7 @@ from pygame.locals import *
 
 def COM(car, road, screen, font, draw = False):
 
-    window_width = 160
+    window_width = 140
     window_length = 120
     step_size = 10
 

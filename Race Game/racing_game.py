@@ -57,7 +57,7 @@ class Map(object):
                     if im_bw.getpixel((x,y)) == 0:
                         self.road[x,y] = 1
 
-        self.finish_line_bottom = [width//2, height-1]
+        self.finish_line_bottom = [width//4, height-1]
         while self.road[self.finish_line_bottom[0], self.finish_line_bottom[1]] == 0:
             self.finish_line_bottom[1] -= 1
         self.finish_line_top = list(self.finish_line_bottom)
@@ -65,7 +65,7 @@ class Map(object):
             self.finish_line_top[1] -= 1
         self.finish_line_top[1] += 1
 
-        self.start_X = width//2 - 40
+        self.start_X = width//4 - 40
         self.start_Y = (self.finish_line_top[1] + self.finish_line_bottom[1])/2
 
         #plt.imshow(self.road, interpolation='nearest')
@@ -120,7 +120,7 @@ class Car(pygame.sprite.Sprite):
 
     """Check for Finish Line Crossing"""
     def laps(self, course):
-        if self.lap_primer == 0 and self.rect.y < course.road.shape[1]/4:
+        if self.lap_primer == 0 and self.rect.y < course.road.shape[1]/3:
             self.lap_primer = 1
             self.crossed = 0
         elif self.crossed == 0 and self.lap_primer == 1 and self.rect.y > course.finish_line_top[1] and self.rect.x > course.finish_line_top[0]:
@@ -185,13 +185,16 @@ class Controllers(object):
 """Main Function of the game"""
 def race():
     """Ask user to load or select a map"""
-    select = input('Would you like to capture a new map? (y/n)  ')
-    if select == 'y':
-        new_name = input('What will you call it?  ')
-        course.capture(new_name)
-    print('Available maps:')
-    print(os.listdir('maps/images/'))
-    map_name = input('What Map Would you like?  ')
+    if False:
+        select = input('Would you like to capture a new map? (y/n)  ')
+        if select == 'y':
+            new_name = input('What will you call it?  ')
+            course.capture(new_name)
+        print('Available maps:')
+        print(os.listdir('maps/images/'))
+        map_name = input('What Map Would you like?  ')
+    else:
+        map_name = 'course'
     if not os.path.isfile('maps/b&w/'+ map_name + '.png'): #if image doesn't exist in black and white create a black and white image
         convert_to_bw(map_name)
 
@@ -223,10 +226,10 @@ def race():
     CPU1 = CPU('COM AI', 170, 'R', course.start_X, course.start_Y)
     CPU2 = CPU('Line AI', 150, 'G', course.start_X, course.start_Y)
     car_list.add(racer)
-    car_list.add(CPU1)
-    car_list.add(CPU2)
-    COM_AI_list.add(CPU1)
-    LINE_AI_list.add(CPU2)
+    # car_list.add(CPU1)
+    # car_list.add(CPU2)
+    # COM_AI_list.add(CPU1)
+    # LINE_AI_list.add(CPU2)
 
     """Initialize the webcam"""
     cap = cv2.VideoCapture(0)
@@ -235,11 +238,13 @@ def race():
     """Main Loop of the Game"""
     Running = True
     time.tick()
+    input_time = 0
+    input_frequency = 5
     while Running:
         """Keep track of time"""
         time.tick(40)
         frame_time = time.get_time() / 1000 #find frame time in seconds
-
+        input_time += frame_time
         """Check for key inputs inputs"""
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -261,7 +266,9 @@ def race():
         # racer.steer(-turn)
 
         """Get plater control input through face recognition"""
-        turn = face_controller(cap, turn)
+        if input_time > 1/input_frequency:
+            turn = face_controller(cap, turn)
+            input_time = 0
         racer.steer(turn, frame_time)
 
         """Draw Game Map"""

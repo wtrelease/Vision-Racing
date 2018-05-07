@@ -2,7 +2,7 @@ import math
 import pygame
 
 def Line(car, road, screen, font, draw = False):
-    thetas = range(-90, 90, 5)
+    thetas = range(-90, 90, 3)
 
 
     x = car.rect.center[0]
