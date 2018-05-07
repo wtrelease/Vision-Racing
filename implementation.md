@@ -22,6 +22,7 @@ COM (or Center of Mass) of road is another AI method which also aims down the ro
 
 ### Architecture Diagram
 ![Diagram]({{https://github.com/wtrelease/Vision-Racing/blob/gh-pages/Presentation%20Links/softdesArchitecture.png}})
+![Architecture Diagram](http://wtrelease.github.io/Vision-Racing/Presentation Links/softdesArchitecture.png)
 
 ### Data Structures
 
