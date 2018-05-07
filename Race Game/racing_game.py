@@ -11,16 +11,6 @@ from opencvcontroller import controller, face_controller
 from LINE_AI import Line
 from COM_AI import COM
 
-class Window(object):
-    """A view of the Game window"""
-    def __int__(self, size):
-        self.screen = pygame.display.set_mode(size)
-
-    def draw(self):
-        self.screen.blit(background, (0, 0))
-        pygame.display.flip()
-
-
 class Map(object):
     """Class representing a game map"""
     def __init__(self,width,height):
@@ -71,7 +61,6 @@ class Map(object):
         #plt.imshow(self.road, interpolation='nearest')
         #plt.show()
 
-
 class Car(pygame.sprite.Sprite):
     """Class representing a car"""
     def __init__(self, name, X, Y):
@@ -83,6 +72,7 @@ class Car(pygame.sprite.Sprite):
         self.forward_offset = self.rect.width/2 #define offset distance from the center of a car to the front
         self.side_offset = self.rect.height/2 #define offset distance from the center of a car to the side
         self.acceleration = 50 #how quickly a car will accelerate (pixels/s^2)
+        self.brake_accel = 250
         self.speed_max = 200 #cars max speed (pixels/s)
         self.speed = 0 #cars initial speed
         self.rotate_speed = 0 #cars initial rotational speed
@@ -141,11 +131,11 @@ class Car(pygame.sprite.Sprite):
         right = (int(right_corner[0]),int(right_corner[1])) #convert right corner to int
         if course.road[left] == 0 and course.road[self.rect.center] == 1: #check for left side collision
             collide = True
-            self.speed -= self.acceleration * 5 * t #slow down
+            self.speed -= self.brake_accel * t #slow down
             self.direction -= self.bounce_speed * t #turn away from the wall
         elif course.road[right] == 0 and course.road[self.rect.center] == 1: #check for right side collision
             collide = True
-            self.speed -= self.acceleration * 5 * t
+            self.speed -= self.brake_accel * t
             self.direction += self.bounce_speed * t
         return collide
 
@@ -170,17 +160,11 @@ class Racer(Car):
 
 class CPU(Car):
     """Class representing a computer controlled car"""
-    def __init__(self, name, speed = 150, color = 'B', X=300, Y=300):
+    def __init__(self, name, speed = 150, accel = 35, color = 'B', X=300, Y=300):
         self.color = color
         super().__init__(name, X, Y)
-        self.acceleration = 35
-        self.speed_max = 150
-
-
-
-class Controllers(object):
-    pass
-
+        self.acceleration = accel
+        self.speed_max = speed
 
 """Main Function of the game"""
 def race():
@@ -223,23 +207,27 @@ def race():
     COM_AI_list = pygame.sprite.Group()
     LINE_AI_list = pygame.sprite.Group()
     racer = Racer('Player', 'B', course.start_X, course.start_Y)
-    CPU1 = CPU('COM AI', 170, 'R', course.start_X, course.start_Y)
-    CPU2 = CPU('Line AI', 150, 'G', course.start_X, course.start_Y)
+    CPU1 = CPU('Fast Line AI', 160, 20, 'R', course.start_X, course.start_Y+15)
+    CPU2 = CPU('Quick Line AI', 145, 60, 'G', course.start_X, course.start_Y-15)
     car_list.add(racer)
-    # car_list.add(CPU1)
-    # car_list.add(CPU2)
-    # COM_AI_list.add(CPU1)
-    # LINE_AI_list.add(CPU2)
+    car_list.add(CPU1)
+    car_list.add(CPU2)
+    LINE_AI_list.add(CPU1)
+    LINE_AI_list.add(CPU2)
 
     """Initialize the webcam"""
     cap = cv2.VideoCapture(0)
+    cap_width = int(cap.get(3))
+    cap_height = int(cap.get(4))
     turn = 0
+    input_time = 0
+    input_frequency = 5
+    fourcc = cv2.VideoWriter_fourcc('M','J','P','G')
+    out = cv2.VideoWriter('gameplay.avi',fourcc, input_frequency, (cap_width,cap_height))
 
     """Main Loop of the Game"""
     Running = True
     time.tick()
-    input_time = 0
-    input_frequency = 5
     while Running:
         """Keep track of time"""
         time.tick(40)
@@ -267,17 +255,18 @@ def race():
 
         """Get plater control input through face recognition"""
         if input_time > 1/input_frequency:
-            turn = face_controller(cap, turn)
+            turn = face_controller(cap, out, turn)
             input_time = 0
         racer.steer(turn, frame_time)
 
         """Draw Game Map"""
         screen.blit(background, (0, 0))
         pygame.draw.line(screen, (255, 255, 0), course.finish_line_top, course.finish_line_bottom, 4)
+        pygame.draw.line(screen, (0, 0, 0), (0, 80), (screen_width, 80), 180)
 
         """Get CPU control input"""
-        [car.steer(COM(car, course.road, screen, font, True), frame_time) for car in COM_AI_list]
-        [car.steer(Line(car, course.road, screen, font, True), frame_time) for car in LINE_AI_list]
+        [car.steer(COM(car, course.road, screen, font, False), frame_time) for car in COM_AI_list]
+        [car.steer(Line(car, course.road, screen, font, False), frame_time) for car in LINE_AI_list]
 
         """Update the cars"""
         [car.update(frame_time, course) for car in car_list] #update all the cars positins
@@ -288,14 +277,18 @@ def race():
         car_list.draw(screen)
         fps = font.render("FPS: %.2f" % time.get_fps(), 1, (255, 0, 0))
         screen.blit(fps, [30, 20])
-        lap = font.render("Lap Count", 1, (0, 0, 255))
+        lap = font.render("Lap Count", 1, (255, 0, 0))
         screen.blit(lap, [screen_width - 160, 20])
-        car_track = 1
+        car_track = 0
         for car in car_list:
             car_track += 1
-            lap = font.render(car.name + ": %.1f" % car.lap_count, 1, (0, 0, 255))
-            screen.blit(lap, [screen_width - 160, car_track*30])
+            lap = font.render(car.name + ": %.1f" % car.lap_count, 1, (255, 0, 0))
+            screen.blit(lap, [screen_width - 210 * (len(car_list) + 1 - car_track), 60])
         pygame.display.flip()
+
+    cap.release()
+    out.release()
+    cv2.destroyAllWindows()
 
 
 if __name__ == "__main__":

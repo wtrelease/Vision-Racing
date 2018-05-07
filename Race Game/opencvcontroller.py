@@ -41,8 +41,9 @@ def controller(cap,old_turn):
 
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_alt.xml')
 
-def face_controller(cap,steer):
+def face_controller(cap, out, steer):
     ret, frame = cap.read()
+    out.write(frame)
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     frame_width = cap.get(3)
     faces = face_cascade.detectMultiScale(gray,

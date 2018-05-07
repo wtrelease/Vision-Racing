@@ -39,6 +39,8 @@ def Line(car, road, screen, font, draw = False):
             if road[int(left[0]),int(left[1])] == 0 or road[int(right[0]),int(right[1])] == 0:
                 on_road = False
                 distance -= step
+            if draw:
+                pygame.draw.line(screen, (150, 0, 0), [car.rect.centerx, car.rect.centery], ((left[0]+right[0])/2,(left[1]+right[1])/2), 2)
         # if theta_offset == 0:
         #     pygame.draw.line(screen, (255, 0, 0), [car.rect.centerx, car.rect.centery], [x, y])
         #     print(theta)
@@ -49,7 +51,7 @@ def Line(car, road, screen, font, draw = False):
             best_point = [(left[0]+right[0])/2,(left[1]+right[1])/2]
 
     if draw:
-        pygame.draw.line(screen, (255, 0, 0), [car.rect.centerx, car.rect.centery], best_point)
+        pygame.draw.line(screen, (255, 0, 0), [car.rect.centerx, car.rect.centery], best_point, 2)
 
 
     angle_diff = best_angle - car.direction
