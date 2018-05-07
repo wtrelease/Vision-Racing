@@ -9,7 +9,7 @@ filename: implementation
 ### OpenCV
 
 ##### Game Controller
-We are using OpenCV as the main game input for the human player to steer the car, accomplished using facial tracking. We locate the users face with the webcam, OpenCV, and Haar Cascades-- and then translate the it's horizontal location into steering input. The result of this is steering that roughly tracks the user leaning from side to side, requiring full body engagement to play properly.
+We are using OpenCV as the main game input for the human player to steer the car, accomplished using facial tracking. We locate the users face with the webcam, OpenCV, and Haar Cascades-- and then translate its horizontal location into steering input. The result of this is steering that roughly tracks the user leaning from side to side, requiring full body engagement to play properly.
 
 ### AI Programs to Race Against
 We have implemented a few different AI programs to controll cars automatically, each with a different method of analyzing the map around a car and determining what steering action the car should take. Our code is structured in such a way that many cars can be created, and each can "request" steering input from any AI program, allowing us to have many AI players with different methods racing at once
