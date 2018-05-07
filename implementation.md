@@ -21,11 +21,7 @@ This is an AI method in which the car will look down the road at a few different
 COM (or Center of Mass) of road is another AI method which also aims down the road but using a slightly different method. COM looks at a window of road in front of a car, and finds the average location of all the road in this window, and then steers towards this point more or less depending on how far to the side and how far in front of the car the point is.
 
 ### Architecture Diagram
-Need to create final Architecture Diagram
-
-### UML Class Diagram
-Need to create final UML Class Diagram
-
+[a link](Vision-Racing/Presentation Link/softdesArchitecture.png)
 
 ### Data Structures
 
