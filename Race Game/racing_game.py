@@ -10,6 +10,7 @@ from convert import convert_to_bw
 from opencvcontroller import controller, face_controller
 from LINE_AI import Line
 from COM_AI import COM
+from pygame.font import *
 
 class Map(object):
     """Class representing a game map"""
@@ -78,8 +79,8 @@ class Car(pygame.sprite.Sprite):
         self.speed_max = 200 #cars max speed (pixels/s)
         self.speed = 0 #cars initial speed
         self.rotate_speed = 0 #cars initial rotational speed
-        self.rotate_speed_max = self.speed * .8 #cars initial rotational speed max
-        self.rotate_speed_min = self.rotate_speed_max * .2 #cars minimum rotation speed max value
+        self.rotate_speed_max = 0 #cars initial rotational speed max
+        self.rotate_speed_max_coeff = 1
         self.bounce_speed = self.speed_max * .8 #cars rotational speed off a wall
         self.direction = 0 #cars initial direction
         self.lap_primer = 0
@@ -89,9 +90,7 @@ class Car(pygame.sprite.Sprite):
     """Update a cars position to the next frame"""
     def update(self, t, course):
         self.speed += self.acceleration * t #speed up car
-        self.rotate_speed_max = self.speed #set max rotate speed
-        if self.rotate_speed_max < self.rotate_speed_min: #keep max rotate speed above min threshold
-            self.rotate_speed_max = self.rotate_speed_min
+        self.rotate_speed_max = self.speed * self.rotate_speed_max_coeff #set max rotate speed
         if self.speed > self.speed_max: #keep speed under speed limit
             self.speed = self.speed_max
         self.direction += self.rotate_speed * t #turn the car
@@ -159,7 +158,7 @@ class Racer(Car):
     def __init__(self, name, color = 'R', X=300, Y=300):
         self.color = color
         super().__init__(name, X, Y)
-        self.rotate_speed_max = self.speed * .3
+        self.rotate_speed_max_coeff = .8
 
 class CPU(Car):
     """Class representing a computer controlled car"""
@@ -168,6 +167,45 @@ class CPU(Car):
         super().__init__(name, X, Y)
         self.acceleration = accel
         self.speed_max = speed
+
+def start_screen(screen_width, screen_height):
+    """Main menu"""
+    #screen
+    screen = pygame.display.set_mode((screen_width, screen_height))
+    #screen.display.set_caption('ROAD RAGE')
+    screen.fill(pygame.Color(0,200,130))
+
+    #title display
+    title_font = pygame.font.SysFont('Arial', 80)
+    title_surf = title_font.render('Vision Racing', True, (0,0,0))
+
+    #slogan display
+    slogan_font = pygame.font.SysFont('Arial', 60)
+    instruction_surf1 = slogan_font.render('Race With Your Face',True,(0,0,0))
+
+    #intruction display
+    instruction_font = pygame.font.SysFont('Arial', 40)
+    instruction_surf2 = instruction_font.render('Press SPACE to start, or Esc to quit.',True,(0,0,0))
+
+
+    #menu loop with all of the information displayed
+    running = True
+    while running:
+        screen.blit(title_surf, ((screen_width/2) - 250,300))
+        screen.blit(instruction_surf1, ((screen_width/2) - 275,400))
+        screen.blit(instruction_surf2, ((screen_width/2) - 310,750))
+        #checks for space or escape clicks
+        for event in pygame.event.get():
+            if event.type == KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    sys.exit()
+                #move to main loop if space is pressed
+                if event.key == pygame.K_SPACE:
+                    running = False
+            if event.type == QUIT:
+                sys.exit()
+        pygame.display.update()
+
 
 """Main Function of the game"""
 def race():
@@ -193,6 +231,10 @@ def race():
     course = Map(screen_width, screen_height)
     course.build(map_name) #build course from map image
 
+    """Create start screen"""
+    pygame.font.init() # initialize the font
+    start_screen(screen_width, screen_height)
+
     """Initialize PyGame"""
     pygame.init()
     time = pygame.time.Clock() #create a game timer
@@ -215,7 +257,7 @@ def race():
     car_list.add(racer)
     car_list.add(CPU1)
     car_list.add(CPU2)
-    COM_AI_list.add(CPU1)
+    LINE_AI_list.add(CPU1)
     LINE_AI_list.add(CPU2)
 
     """Initialize the webcam"""
@@ -224,7 +266,7 @@ def race():
     cap_height = int(cap.get(4))
     turn = 0
     input_time = 0
-    input_frequency = 5
+    input_frequency = 20
     fourcc = cv2.VideoWriter_fourcc('M','J','P','G')
     out = cv2.VideoWriter('gameplay.avi',fourcc, input_frequency, (cap_width,cap_height))
 
@@ -258,7 +300,7 @@ def race():
 
         """Get plater control input through face recognition"""
         if input_time > 1/input_frequency and True:
-            turn = face_controller(cap, out, turn)
+            turn = face_controller(cap, out, turn, True)
             input_time = 0
         racer.steer(turn, frame_time)
 
@@ -268,8 +310,8 @@ def race():
         pygame.draw.line(screen, (0, 0, 0), (0, 80), (screen_width, 80), 180)
 
         """Get CPU control input"""
-        [car.steer(COM(car, course.road, screen, font, True), frame_time) for car in COM_AI_list]
-        [car.steer(Line(car, course.road, screen, font, True), frame_time) for car in LINE_AI_list]
+        [car.steer(COM(car, course.road, screen, font), frame_time) for car in COM_AI_list]
+        [car.steer(Line(car, course.road, screen, font), frame_time) for car in LINE_AI_list]
 
         """Update the cars"""
         [car.update(frame_time, course) for car in car_list] #update all the cars positins
@@ -292,6 +334,8 @@ def race():
     cap.release()
     out.release()
     cv2.destroyAllWindows()
+
+
 
 
 if __name__ == "__main__":

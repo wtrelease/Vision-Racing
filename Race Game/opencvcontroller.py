@@ -45,12 +45,12 @@ def face_controller(cap, out, steer, record = False):
     ret, frame = cap.read()
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     frame_width = cap.get(3)
+    frame_height = int(cap.get(4))
     faces = face_cascade.detectMultiScale(gray,
                                         scaleFactor=1.1,
                                         minNeighbors=5,
                                         minSize=(30, 30))
     for (x, y, w, h) in faces:
-        cv2.rectangle(frame, (x,y), (x+w, y+h), (0, 255, 0), 2)
         face_center = x + w/2
         frame_center = frame_width/2
         bounds = .3
@@ -62,14 +62,16 @@ def face_controller(cap, out, steer, record = False):
         if face_center > upper_bound:
             face_center = upper_bound
         steer = (face_center - frame_center)/view_range*2
+        power = 2.6
+        steer = abs(steer)**(power-1)*steer
         if record:
-            cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 0, 255))
-        # cv2.rectangle(gray, (x, y), (x+w, y+h), (0, 0, 255))
-        # cv2.imshow('frame', gray)
+            cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 255))
+            line_loc = int(frame_center + view_range/2*steer)
+            cv2.line(frame, (line_loc, frame_height), (line_loc, frame_height - 50), (0, 255, 255), 3)
+            # cv2.imshow('frame', frame)
         # if cv2.waitKey(1) & 0xFF == ord('q'):
         #     cv2.destroyAllWindows
         #     break
     if record:
         out.write(frame)
-    power = 2.2
-    return abs(steer)**(power-1)*steer
+    return steer
