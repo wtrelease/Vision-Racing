@@ -23,8 +23,5 @@ COM (or Center of Mass) of road is another AI method which also aims down the ro
 ### Architecture Diagram
 ![Architecture Diagram](http://wtrelease.github.io/Vision-Racing/PresentationLinks/Diagram.png)
 
-### Data Structures
-
-
 ### Use of PyGame
 We utilized the pygame module for this project, mostly for animation but also to manage some keyboard inputs as well as to store game objects such as cars or potentially obstacles down the line. While not critical, this module gives us a great amount of flexibility in how we choose to look and and react to collisions between game objects.
