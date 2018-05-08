@@ -59,9 +59,6 @@ class Map(object):
         self.start_X = width//4 - 40
         self.start_Y = (self.finish_line_top[1] + self.finish_line_bottom[1])/2
 
-        #plt.imshow(self.road, interpolation='nearest')
-        #plt.show()
-
 class Car(pygame.sprite.Sprite):
     """Class representing a car"""
     def __init__(self, name, X, Y):
@@ -285,18 +282,6 @@ def race():
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_q:
                     sys.exit()
-            #     if event.key == pygame.K_LEFT:
-            #         racerTurn = 1
-            #     elif event.key == pygame.K_RIGHT:
-            #         racerTurn = -1
-            # else:
-            #     racerTurn = 0
-
-        # racer.steer(racerTurn, frame_time)
-
-        """Get player control input"""
-        # turn = controller(cap, turn)
-        # racer.steer(-turn)
 
         """Get plater control input through face recognition"""
         if input_time > 1/input_frequency and True:
@@ -315,8 +300,6 @@ def race():
 
         """Update the cars"""
         [car.update(frame_time, course) for car in car_list] #update all the cars positins
-
-        """Check for events"""
 
         """Draw the game"""
         car_list.draw(screen)

@@ -1,6 +1,7 @@
 import math
 import pygame
 
+"""Function to determine steering by finding longest straight path ahead"""
 def Line(car, road, screen, font, draw = False):
     thetas = range(-90, 90, 3) # define the angles that will be checked
 
@@ -64,7 +65,7 @@ def Line(car, road, screen, font, draw = False):
     else:
         # steer is a number between -1 and 1
         steer = angle_diff/60
-    # if the car is off road, it won't steer until it is on road 
+    # if the car is off road, it won't steer until it is on road
     if max_distance == 0:
         steer = 0
 
