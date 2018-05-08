@@ -29,6 +29,7 @@ pip install -r requirements.txt
 
 ### Documentation
 [Final video can be found here](https://github.com/wtrelease/Vision-Racing/blob/gh-pages/Vision_Racing_Small.mp4)
+<br />
 [Poster can be found here]()
 
 ### Usage
@@ -61,3 +62,4 @@ SOFTWARE.
 
 ### Tip jar
 Idk you could venmo us
+@walker-trelease
