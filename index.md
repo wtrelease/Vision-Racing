@@ -1,7 +1,7 @@
 ---
 title: Home
 layout: template
-filename: 1-index
+filename: index
 --- 
 
 ### Overview.
