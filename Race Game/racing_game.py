@@ -69,6 +69,8 @@ class Car(pygame.sprite.Sprite):
         self.name = name
         self.rect = self.orig_image.get_rect()
         self.rect.center = (X, Y)
+        self.location_X = X
+        self.location_Y = Y
         self.forward_offset = self.rect.width/2 #define offset distance from the center of a car to the front
         self.side_offset = self.rect.height/2 #define offset distance from the center of a car to the side
         self.acceleration = 50 #how quickly a car will accelerate (pixels/s^2)
@@ -95,16 +97,18 @@ class Car(pygame.sprite.Sprite):
         self.direction += self.rotate_speed * t #turn the car
         self.direction = self.direction % 360 #simplify direction
         rads = math.radians(self.direction) #get direction in radians
-        dx = int(self.speed * math.cos(rads) * t) #find x distance car should move
-        dy = -int(self.speed * math.sin(rads) * t) #find y distance car should move
-        self.rect.x += dx #move the car in x
-        self.rect.y += dy #move the car in y
+        dx = self.speed * math.cos(rads) * t #find x distance car should move
+        dy = -self.speed * math.sin(rads) * t #find y distance car should move
+        self.location_X += dx #move the car in x
+        self.location_Y += dy #move the car in y
         collide = self.collision(t, course, rads)
         if collide:
-            self.rect.x -= dx #move the car in x
-            self.rect.y -= dy #move the car in y
+            self.location_X -= dx #move the car in x
+            self.location_Y -= dy #move the car in y
         if self.speed < -self.speed_max/3: #prevent speed from going negative
             self.speed = -self.speed_max/3
+        self.rect.x = int(self.location_X)
+        self.rect.y = int(self.location_Y)
         self.rotate() #call method to rotate the cars image
         self.laps(course)
 
@@ -125,8 +129,8 @@ class Car(pygame.sprite.Sprite):
         f_y = -self.forward_offset * math.sin(rads) #find y offset from center of car to front
         s_x = self.side_offset * math.cos(rads-math.pi/2) #find x offset from center of car to side
         s_y = -self.side_offset * math.sin(rads-math.pi/2) #find y offset from center of car to side
-        left_corner = (self.rect.center[0]+f_x-s_x, self.rect.center[1]+f_y-s_y) #find coordinates of front left corner
-        right_corner = (self.rect.center[0]+f_x+s_x, self.rect.center[1]+f_y+s_y) #find coordinates of front right corner
+        left_corner = (self.location_X+f_x-s_x, self.location_Y+f_y-s_y) #find coordinates of front left corner
+        right_corner = (self.location_X+f_x+s_x, self.location_Y+f_y+s_y) #find coordinates of front right corner
         left = (int(left_corner[0]),int(left_corner[1])) #covert left corner to int
         right = (int(right_corner[0]),int(right_corner[1])) #convert right corner to int
         if course.road[left] == 0 and course.road[self.rect.center] == 1: #check for left side collision
@@ -141,10 +145,9 @@ class Car(pygame.sprite.Sprite):
 
     """Rotate a cars image"""
     def rotate(self):
-        x, y = self.rect.center #store image location
         self.image = pygame.transform.rotate(self.orig_image, self.direction) #rotate image to current direction
         self.rect = self.image.get_rect() #get new image rectangle
-        self.rect.center = (x, y) #move the image to origonal location
+        self.rect.center = (self.location_X, self.location_Y) #move the image to origonal location
 
     """Set rotate speed based on steering input"""
     def steer(self, steer, t):
@@ -212,7 +215,7 @@ def race():
     car_list.add(racer)
     car_list.add(CPU1)
     car_list.add(CPU2)
-    LINE_AI_list.add(CPU1)
+    COM_AI_list.add(CPU1)
     LINE_AI_list.add(CPU2)
 
     """Initialize the webcam"""
@@ -254,7 +257,7 @@ def race():
         # racer.steer(-turn)
 
         """Get plater control input through face recognition"""
-        if input_time > 1/input_frequency:
+        if input_time > 1/input_frequency and True:
             turn = face_controller(cap, out, turn)
             input_time = 0
         racer.steer(turn, frame_time)
@@ -265,8 +268,8 @@ def race():
         pygame.draw.line(screen, (0, 0, 0), (0, 80), (screen_width, 80), 180)
 
         """Get CPU control input"""
-        [car.steer(COM(car, course.road, screen, font, False), frame_time) for car in COM_AI_list]
-        [car.steer(Line(car, course.road, screen, font, False), frame_time) for car in LINE_AI_list]
+        [car.steer(COM(car, course.road, screen, font, True), frame_time) for car in COM_AI_list]
+        [car.steer(Line(car, course.road, screen, font, True), frame_time) for car in LINE_AI_list]
 
         """Update the cars"""
         [car.update(frame_time, course) for car in car_list] #update all the cars positins

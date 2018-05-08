@@ -41,9 +41,8 @@ def controller(cap,old_turn):
 
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_alt.xml')
 
-def face_controller(cap, out, steer):
+def face_controller(cap, out, steer, record = False):
     ret, frame = cap.read()
-    out.write(frame)
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     frame_width = cap.get(3)
     faces = face_cascade.detectMultiScale(gray,
@@ -63,10 +62,14 @@ def face_controller(cap, out, steer):
         if face_center > upper_bound:
             face_center = upper_bound
         steer = (face_center - frame_center)/view_range*2
+        if record:
+            cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 0, 255))
         # cv2.rectangle(gray, (x, y), (x+w, y+h), (0, 0, 255))
         # cv2.imshow('frame', gray)
         # if cv2.waitKey(1) & 0xFF == ord('q'):
         #     cv2.destroyAllWindows
         #     break
+    if record:
+        out.write(frame)
     power = 2.2
     return abs(steer)**(power-1)*steer
