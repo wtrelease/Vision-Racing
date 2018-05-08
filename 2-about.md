@@ -1,7 +1,7 @@
 ---
 title: About
 layout: template
-filename: about
+filename: 2-about
 --- 
 
 # Vision Racing
