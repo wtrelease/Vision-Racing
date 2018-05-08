@@ -52,10 +52,12 @@ def COM(car, road, screen, font, draw = False):
         BL = (int(BL[0]),int(BL[1])) #covert left corner to int
         BR = (int(BR[0]),int(BR[1])) #covert left corner to int
 
+        # draw the window in which the road is checked
         pygame.draw.line(screen, (255, 0, 0), FL, FR, 2)
         pygame.draw.line(screen, (255, 0, 0), FL, BL, 2)
         pygame.draw.line(screen, (255, 0, 0), BR, FR, 2)
         pygame.draw.line(screen, (255, 0, 0), BL, BR, 2)
+        # draw the COM calculated
         pygame.draw.circle(screen, (255, 0, 0), COM, 5)
 
     COM_angle = -math.degrees(math.atan2(COM[1]-Y, COM[0]-X))
