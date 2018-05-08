@@ -169,7 +169,7 @@ class CPU(Car):
         self.speed_max = speed
 
 def start_screen(screen_width, screen_height):
-    """Main menu"""
+    """Creates a start screen before the game begins"""
     #screen
     screen = pygame.display.set_mode((screen_width, screen_height))
     #screen.display.set_caption('ROAD RAGE')
